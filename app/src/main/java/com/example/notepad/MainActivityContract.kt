@@ -7,7 +7,8 @@ import com.example.notepad.model.NoteModel
 interface MainActivityContract {
 
     interface View {
-        fun updateNote(noteModel: NoteModel?)
+        fun updateNoteList(note: NoteModel?)
+        fun updateNoteAdapter(notes: List<NoteModel>)
     }
 
     interface Presenter {

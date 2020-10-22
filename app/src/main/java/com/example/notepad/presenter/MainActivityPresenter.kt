@@ -14,6 +14,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.*
 
 class MainActivityPresenter: MainActivityContract.Presenter {
 
@@ -44,7 +45,8 @@ class MainActivityPresenter: MainActivityContract.Presenter {
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    it?.forEach { note -> Log.d("testing", note.title + ": "+ note.description) }
+                    it?.let { it1 -> view?.updateNoteAdapter(it1) }
+                    it?.forEach { note -> Log.d("Testing:", note.title + ": "+ note.description) }
                 },
                 {
 
@@ -54,7 +56,7 @@ class MainActivityPresenter: MainActivityContract.Presenter {
 
     override fun saveNote(context: Context, title: String, description: String) {
         Observable.fromCallable {
-            val noteModel = NoteModel(1, title, description)
+            val noteModel = NoteModel(UUID.randomUUID().mostSignificantBits, title, description)
             with(getDaoAccess(context)) {
                 this?.insertNote(noteModel)
             }
@@ -62,7 +64,8 @@ class MainActivityPresenter: MainActivityContract.Presenter {
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    Log.d("testing", it.title + ": "+ it.description)
+                    view?.updateNoteList(it)
+                    Log.d("Testing: saved note", it.title + ": "+ it.description)
                 },
                 {
 

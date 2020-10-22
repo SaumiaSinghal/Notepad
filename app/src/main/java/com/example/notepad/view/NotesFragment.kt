@@ -38,8 +38,6 @@ class NotesFragment : Fragment(), MainActivityContract.View {
         presenter.setView(this)
         presenter.getNotesList(requireContext())
 
-        recycler_view?.adapter = noteAdapter
-
         requireActivity().onBackPressedDispatcher.addCallback(this) {}
 
         add_note_button.setOnClickListener {
@@ -47,7 +45,12 @@ class NotesFragment : Fragment(), MainActivityContract.View {
         }
     }
 
-    override fun updateNote(noteModel: NoteModel?) {
+    override fun updateNoteList(noteModel: NoteModel?) {
+    }
+
+    override fun updateNoteAdapter(notes: List<NoteModel>) {
+        noteAdapter = NoteAdapter(requireContext(), notes)
+        recycler_view?.adapter = noteAdapter
     }
 
     private fun initRecyclerView() {
