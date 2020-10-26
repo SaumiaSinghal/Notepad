@@ -5,16 +5,10 @@ import android.util.Log
 import androidx.fragment.app.FragmentManager
 import com.example.notepad.MainActivityContract
 import com.example.notepad.R
-import com.example.notepad.model.NoteModel
-import com.example.notepad.room.DAOAccess
-import com.example.notepad.room.NoteDatabase
+import com.example.notepad.model.MainActivityModel
 import com.example.notepad.view.BlankNoteFragment
 import com.example.notepad.view.NotesFragment
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import java.util.*
 
 class MainActivityPresenter: MainActivityContract.Presenter {
 
@@ -22,6 +16,7 @@ class MainActivityPresenter: MainActivityContract.Presenter {
     override val BLANK_NOTE_FRAGMENT = "BLANK_NOTE_FRAGMENT"
 
     private var view: MainActivityContract.View? = null
+    private var model: MainActivityContract.Model = MainActivityModel()
 
     private var disposable: Disposable? = null
 
@@ -40,10 +35,7 @@ class MainActivityPresenter: MainActivityContract.Presenter {
     }
 
     override fun getNotesList(context: Context) {
-        Observable.fromCallable {
-            getDaoAccess(context)?.getNotesList()
-        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
+        model.fetchNotesListFromDatabase(context)?.subscribe(
                 {
                     it?.let { it1 -> view?.updateNoteAdapter(it1) }
                     it?.forEach { note -> Log.d("Testing:", note.title + ": "+ note.description) }
@@ -55,14 +47,7 @@ class MainActivityPresenter: MainActivityContract.Presenter {
     }
 
     override fun saveNote(context: Context, title: String, description: String) {
-        Observable.fromCallable {
-            val noteModel = NoteModel(UUID.randomUUID().mostSignificantBits, title, description)
-            with(getDaoAccess(context)) {
-                this?.insertNote(noteModel)
-            }
-            noteModel
-        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
+        model.saveNoteToDatabase(context, title, description).subscribe(
                 {
                     view?.updateNoteList(it)
                     Log.d("Testing: saved note", it.title + ": "+ it.description)
@@ -74,11 +59,7 @@ class MainActivityPresenter: MainActivityContract.Presenter {
     }
 
     override fun deleteNote(context: Context, title: String?, description: String?) {
-        Observable.fromCallable {
-            getDaoAccess(context)?.deleteNote(title, description)
-            getDaoAccess(context)?.getNotesList()
-        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
+        model.deleteNoteInDatabase(context, title, description)?.subscribe(
                 {
                     it?.let { it1 -> view?.updateNoteAdapter(it1) }
                 },
@@ -94,9 +75,5 @@ class MainActivityPresenter: MainActivityContract.Presenter {
 
     override fun setView(view: MainActivityContract.View) {
         this.view = view
-    }
-
-    private fun getDaoAccess(context: Context): DAOAccess? {
-        return NoteDatabase.getDatabaseClient(context)?.noteDao()
     }
 }

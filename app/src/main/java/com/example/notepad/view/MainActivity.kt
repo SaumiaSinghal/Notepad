@@ -19,6 +19,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         presenter.launchNotesListFragment(supportFragmentManager)
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.rxUnsubscribe()
     }
 }

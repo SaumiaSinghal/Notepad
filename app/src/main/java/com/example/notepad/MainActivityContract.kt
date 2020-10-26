@@ -3,6 +3,7 @@ package com.example.notepad
 import android.content.Context
 import androidx.fragment.app.FragmentManager
 import com.example.notepad.model.NoteModel
+import io.reactivex.rxjava3.core.Observable
 
 interface MainActivityContract {
 
@@ -19,16 +20,16 @@ interface MainActivityContract {
         fun launchBlankNoteFragment(fragmentManager: FragmentManager)
 
         fun getNotesList(context: Context)
-
         fun saveNote(context: Context, title: String, description: String)
-
         fun deleteNote(context: Context, title: String?, description: String?)
 
         fun rxUnsubscribe()
-
         fun setView(view: View)
     }
 
     interface Model {
+        fun fetchNotesListFromDatabase(context: Context): Observable<List<NoteModel>?>?
+        fun saveNoteToDatabase(context: Context, title: String, description: String) :Observable<NoteModel>
+        fun deleteNoteInDatabase(context: Context, title: String?, description: String?): Observable<List<NoteModel>?>?
     }
 }
