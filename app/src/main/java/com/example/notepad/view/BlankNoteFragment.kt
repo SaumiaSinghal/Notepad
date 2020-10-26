@@ -1,19 +1,15 @@
 package com.example.notepad.view
 
-import android.R.attr.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.example.notepad.MainActivityContract
 import com.example.notepad.R
 import com.example.notepad.presenter.MainActivityPresenter
 import kotlinx.android.synthetic.main.layout_blank_note_fragment.*
-
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.

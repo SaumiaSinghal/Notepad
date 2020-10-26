@@ -3,7 +3,6 @@ package com.example.notepad.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
 
 @Entity(tableName = "note")
 data class NoteModel(
@@ -15,6 +14,3 @@ data class NoteModel(
     @ColumnInfo(name = "description")
     var description: String,
 )
-//{
-//    constructor(title: String, description: String):this (null, title, description)
-//}

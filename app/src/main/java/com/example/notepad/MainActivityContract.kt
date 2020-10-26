@@ -22,6 +22,8 @@ interface MainActivityContract {
 
         fun saveNote(context: Context, title: String, description: String)
 
+        fun deleteNote(context: Context, title: String, description: String)
+
         fun rxUnsubscribe()
 
         fun setView(view: View)

@@ -12,6 +12,7 @@ import com.example.notepad.MainActivityContract
 import com.example.notepad.R
 import com.example.notepad.model.NoteModel
 import com.example.notepad.presenter.MainActivityPresenter
+import kotlinx.android.synthetic.main.layout_note.*
 import kotlinx.android.synthetic.main.layout_notes_fragment.*
 
 /**
@@ -43,6 +44,8 @@ class NotesFragment : Fragment(), MainActivityContract.View {
         add_note_button.setOnClickListener {
             presenter.launchBlankNoteFragment(requireActivity().supportFragmentManager)
         }
+
+        delete_note_button.setOnClickListener { presenter.deleteNote() }
     }
 
     override fun updateNoteList(noteModel: NoteModel?) {

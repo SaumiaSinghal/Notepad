@@ -73,6 +73,10 @@ class MainActivityPresenter: MainActivityContract.Presenter {
             )
     }
 
+    override fun deleteNote(context: Context, title: String, description: String) {
+        Observable.fromCallable {  }
+    }
+
     override fun rxUnsubscribe() {
         disposable?.dispose()
     }

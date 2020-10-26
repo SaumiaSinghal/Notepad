@@ -14,5 +14,6 @@ interface DAOAccess {
     @Query("select * from note")
     fun getNotesList(): List<NoteModel>
 
-
+    @Query("delete from note where title = :title and description = :description")
+    fun deleteNote(title: String?, description: String?)
 }

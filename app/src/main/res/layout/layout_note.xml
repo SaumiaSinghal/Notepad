@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:orientation="vertical" >
+    android:padding="8dp">
+
+    <ImageButton
+        android:id="@+id/delete_note_button"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="2dp"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_baseline_delete_24" />
 
     <TextView
         android:id="@+id/title_text"
@@ -19,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:gravity="center" />
+        android:gravity="center"
+        android:layout_below="@+id/title_text" />
 
-</LinearLayout>
+</RelativeLayout>
