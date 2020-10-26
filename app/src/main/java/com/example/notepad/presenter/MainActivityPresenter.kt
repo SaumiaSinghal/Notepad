@@ -73,8 +73,19 @@ class MainActivityPresenter: MainActivityContract.Presenter {
             )
     }
 
-    override fun deleteNote(context: Context, title: String, description: String) {
-        Observable.fromCallable {  }
+    override fun deleteNote(context: Context, title: String?, description: String?) {
+        Observable.fromCallable {
+            getDaoAccess(context)?.deleteNote(title, description)
+            getDaoAccess(context)?.getNotesList()
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    it?.let { it1 -> view?.updateNoteAdapter(it1) }
+                },
+                {
+
+                }
+            )
     }
 
     override fun rxUnsubscribe() {
