@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.*
 
-class MainActivityModel() : MainActivityContract.Model {
+class MainActivityModel : MainActivityContract.Model {
 
     override fun fetchNotesListFromDatabase(context: Context): Observable<List<NoteModel>?>? {
         return Observable.fromCallable {
@@ -17,20 +17,18 @@ class MainActivityModel() : MainActivityContract.Model {
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun saveNoteToDatabase(context: Context, title: String, description: String): Observable<NoteModel> {
+    override fun saveNoteToDatabase(context: Context, title: String, description: String): Observable<Unit?>? {
         return Observable.fromCallable {
             val noteModel = NoteModel(UUID.randomUUID().mostSignificantBits, title, description)
             with(getDaoAccess(context)) {
                 this?.insertNote(noteModel)
             }
-            noteModel
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun deleteNoteInDatabase(context: Context, title: String?, description: String?): Observable<List<NoteModel>?>? {
+    override fun deleteNoteInDatabase(context: Context, title: String?, description: String?): Observable<Unit?>? {
         return Observable.fromCallable {
             getDaoAccess(context)?.deleteNote(title, description)
-            getDaoAccess(context)?.getNotesList()
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 

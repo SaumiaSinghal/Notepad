@@ -8,7 +8,6 @@ import io.reactivex.rxjava3.core.Observable
 interface MainActivityContract {
 
     interface View {
-        fun updateNoteList(note: NoteModel?)
         fun updateNoteAdapter(notes: List<NoteModel>)
     }
 
@@ -29,7 +28,7 @@ interface MainActivityContract {
 
     interface Model {
         fun fetchNotesListFromDatabase(context: Context): Observable<List<NoteModel>?>?
-        fun saveNoteToDatabase(context: Context, title: String, description: String) :Observable<NoteModel>
-        fun deleteNoteInDatabase(context: Context, title: String?, description: String?): Observable<List<NoteModel>?>?
+        fun saveNoteToDatabase(context: Context, title: String, description: String) : Observable<Unit?>?
+        fun deleteNoteInDatabase(context: Context, title: String?, description: String?): Observable<Unit?>?
     }
 }

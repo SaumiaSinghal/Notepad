@@ -47,9 +47,6 @@ class NotesFragment : Fragment(), MainActivityContract.View, View.OnClickListene
         }
     }
 
-    override fun updateNoteList(noteModel: NoteModel?) {
-    }
-
     override fun updateNoteAdapter(notes: List<NoteModel>) {
         noteAdapter = NoteAdapter(requireContext(), notes, presenter)
         recycler_view?.adapter = noteAdapter

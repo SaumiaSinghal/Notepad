@@ -41,32 +41,17 @@ class MainActivityPresenter: MainActivityContract.Presenter {
                     it?.forEach { note -> Log.d("Testing:", note.title + ": "+ note.description) }
                 },
                 {
-
                 }
             )
     }
 
     override fun saveNote(context: Context, title: String, description: String) {
-        model.saveNoteToDatabase(context, title, description).subscribe(
-                {
-                    view?.updateNoteList(it)
-                    Log.d("Testing: saved note", it.title + ": "+ it.description)
-                },
-                {
-
-                }
-            )
+        model.saveNoteToDatabase(context, title, description)?.subscribe()
     }
 
     override fun deleteNote(context: Context, title: String?, description: String?) {
-        model.deleteNoteInDatabase(context, title, description)?.subscribe(
-                {
-                    it?.let { it1 -> view?.updateNoteAdapter(it1) }
-                },
-                {
-
-                }
-            )
+        model.deleteNoteInDatabase(context, title, description)?.subscribe()
+        getNotesList(context)
     }
 
     override fun rxUnsubscribe() {
